@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cos.baseball2.repository.StatRepository">
+	<select id="findAll" resultType="com.cos.baseball2.dto.StatisticsRespDto">
+	SELECT POSITION,
+		MAX(if(teamId=1,name,""))"lg",
+		MAX(if(teamId=2,name,""))"kia",
+		MAX(if(teamId=3,name,""))"lotte"
+	FROM player
+	GROUP BY position
+	</select>
+</mapper>

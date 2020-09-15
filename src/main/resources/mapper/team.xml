@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cos.baseball2.repository.TeamRepository">
+
+	<select id="findAll" resultType="com.cos.baseball2.model.Team">
+		SELECT id, stadiumId, name
+		FROM team
+	</select>
+
+	<select id="findAllJoin" resultType="com.cos.baseball2.dto.TeamDto">
+		SELECT t.id, s.name "stadiumName", t.name "teamName"
+		, ( SELECT COUNT(*) + 1 FROM team WHERE name <![CDATA[<]]> t.name ) AS no
+			FROM team t INNER JOIN stadium s
+			ON t.stadiumId = s.id
+			ORDER BY no
+	</select>
+	
+	<select id="findByIdAndName" resultType="com.cos.baseball2.dto.TeamDto">
+		SELECT t.id, s.name "stadiumName", t.name "teamName"
+		FROM team t INNER JOIN stadium s
+		ON t.stadiumId = s.id
+		WHERE t.id = #{id} AND t.name = #{name}
+	</select>
+
+	<delete id="deleteById">
+		DELETE FROM team
+		WHERE id = #{id}
+	</delete>
+	
+
+	<insert id="save">
+		INSERT INTO team(name, stadiumId) 
+		VALUES(#{name}, #{stadiumId}) 
+	</insert>
+</mapper>
